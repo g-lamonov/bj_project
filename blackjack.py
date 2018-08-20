@@ -31,10 +31,9 @@ class Hand(object):
 
     def __str__(self):
 
-
 class Deck(object):
     def __init__(self):
-        self.cards = []
+        self.cards = [Card(r,s) for r in ranks for s in suits]
 
 
 
@@ -42,6 +41,9 @@ class Deck(object):
         for sui in ["Spades", "Clubs", "Diamonds", "Hearts"]:
             for valu in range(1, 14):
                 print "{} of {}".format(valu, sui)
+
+class new_game():
+
 
 
 
