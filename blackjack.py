@@ -1,13 +1,17 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# vim:fileencoding=utf-8
+
 class Card(object):
     def __init__(self, rank, suit):
         self.rank = rank
         self.suit = suit
 
     def card_value(self):
-        if self.rank in "TJQK":
+        if self.rank in {'Валет','Королева','Король','Туз'}:
             return 10
         else:
-            return "A23456789".index(self.rank)
+            return ('Туз','2','3','4','5','6','7','8','9').index(self.rank)
     def get_rank(self):
         return self.rank
 
@@ -27,22 +31,22 @@ class Hand(object):
         aces = 0
         for card in self.cards:
             result += card.card_value()
-            if card.get_rank() == "A":
+            if card.get_rank() == "Туз":
                 aces += 1
         if result + aces * 10 <= 21:
             result +=aces * 10
         return result
     def __str__(self):
-        text =  "%s's contains:\n" % self.name
+        text =  "%sсодержит :\n" % self.name
         for card in self.cards:
             text += str(card) + " "
-        text += "\nHand value: " + str(self.get_value())
+        text += "\nЗначение на руке: " + str(self.get_value())
         return text
 
 class Deck(object):
     def __init__(self):
-        ranks = "23456789TJQKA"
-        suits = "DCHS"
+        ranks = ('2','3','4','5','6','7','8','9','10','Валет','Королева','Король','Туз')
+        suits = ('Бубны','Червы','Трефы','Пики')
         self.cards = [Card(r,s) for r in ranks for s in suits]
         shuffle(self.cards)
 
@@ -52,8 +56,8 @@ class Deck(object):
 from random import shuffle
 def new_game():
     d = Deck()
-    player_hand = Hand("Player")
-    dealer_hand = Hand("Dealer")
+    player_hand = Hand("Игрок")
+    dealer_hand = Hand("Дилер")
 
     player_hand.add_card(d.deal_card())
     player_hand.add_card(d.deal_card())
@@ -66,15 +70,15 @@ def new_game():
 
     in_game = True
     while player_hand.get_value() < 21:
-        ans = raw_input("Hit or stand? (h/s)")
-        if ans == "h":
+        ans = raw_input("Идти дальше? (д/н)")
+        if ans == "д":
             player_hand.add_card(d.deal_card())
             print(player_hand)
             if player_hand.get_value() > 21:
-                print("You lose")
+                print("Ты проиграл")
                 in_game = False
         else:
-            print("You stand!")
+            print("Ты стоишь!")
             break
     print "=" * 20
     if in_game:
@@ -82,12 +86,12 @@ def new_game():
             dealer_hand.add_card(d.deal_card())
             print(dealer_hand)
             if dealer_hand.get_value() > 21:
-                print("Dealer bust")
+                print("Дилер проиграл")
                 in_game = False
     if in_game:
         if player_hand.get_value() > dealer_hand.get_value():
-            print("You win")
+            print("Ты выиграл")
         else:
-            print("Dealer win")
+            print("Дилер выиграл")
 
 new_game()
