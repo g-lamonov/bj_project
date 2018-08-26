@@ -8,10 +8,10 @@ class Card(object):
         self.suit = suit
 
     def card_value(self):
-        if self.rank in {'Валет','Королева','Король','Туз'}:
+        if self.rank in ('Валет','Королева','Король','Туз'):
             return 10
         else:
-            return ('Туз','2','3','4','5','6','7','8','9').index(self.rank)
+            return ('', 'Туз','2','3','4','5','6','7','8','9',"10").index(self.rank)
     def get_rank(self):
         return self.rank
 
@@ -41,6 +41,7 @@ class Hand(object):
         for card in self.cards:
             text += str(card) + " "
         text += "\nЗначение на руке: " + str(self.get_value())
+
         return text
 
 class Deck(object):
@@ -55,6 +56,7 @@ class Deck(object):
 
 from random import shuffle
 def new_game():
+    file_save = open('21.txt', 'w')
     d = Deck()
     player_hand = Hand("Игрок")
     dealer_hand = Hand("Дилер")
@@ -87,11 +89,19 @@ def new_game():
             print(dealer_hand)
             if dealer_hand.get_value() > 21:
                 print("Дилер проиграл")
+                file_save.write("You win")
+                file_save.close()
                 in_game = False
     if in_game:
         if player_hand.get_value() > dealer_hand.get_value():
             print("Ты выиграл")
+            file_save.write("You win")
+            file_save.close()
+
         else:
             print("Дилер выиграл")
+            file_save.write('Dealer win')
+            file_save.close()
+
 
 new_game()
