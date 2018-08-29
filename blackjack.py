@@ -72,6 +72,10 @@ def new_game():
 
     in_game = True
     while player_hand.get_value() < 21:
+
+        if ('ТузБубны') in str(dealer_hand):
+            print("У дилера туз, хотите ли застраховаться?")
+
         ans = raw_input("Идти дальше? (д/н)")
         if ans == "д":
             player_hand.add_card(d.deal_card())
