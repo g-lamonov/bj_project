@@ -11,12 +11,26 @@ class Card(object):
         if self.rank in ('Валет','Королева','Король','Туз'):
             return 10
         else:
-            return ('', 'Туз','2','3','4','5','6','7','8','9',"10").index(self.rank)
+            return ('', 'Туз','2','3','4','5','6','7','8','9','10').index(self.rank)
     def get_rank(self):
         return self.rank
 
     def __str__(self):
         return "%s%s"  % (self.rank, self. suit)
+
+class bankAccount:
+    def __init__(self):
+        self.initial_balance = 500
+
+    def moneyOfTheWinner(self, amount):
+        self.balance +=amount
+        return self.initial_balance
+
+    def moneyOfTheBankAccount(self, amount):
+        self.balance -= amount
+        return self.initial_balance
+    def stateOfAnAccount(self):
+        return self.initial_balance
 
 class Hand(object):
     def __init__(self, name):
@@ -36,6 +50,7 @@ class Hand(object):
         if result + aces * 10 <= 21:
             result +=aces * 10
         return result
+
     def __str__(self):
         text =  "%sсодержит :\n" % self.name
         for card in self.cards:
@@ -58,8 +73,19 @@ from random import shuffle
 def new_game():
     file_save = open('21.txt', 'w')
     d = Deck()
+
+    player_balance = bankAccount()
     player_hand = Hand("Игрок")
     dealer_hand = Hand("Дилер")
+
+    print("You have " + str(player_balance.stateOfAnAccount()) + "$ money")
+
+    while True:
+        betOfMoney = raw_input("Сделайте ставку \n")
+        if betOfMoney > str(player_balance.stateOfAnAccount()):
+            print('Ставка превышает баланс!')
+        else:
+            break
 
     player_hand.add_card(d.deal_card())
     player_hand.add_card(d.deal_card())
@@ -72,12 +98,17 @@ def new_game():
 
     in_game = True
     while player_hand.get_value() < 21:
-
-        if ('ТузБубны') in str(dealer_hand):
+        if ('Туз') in str(dealer_hand):
             print("У дилера туз, хотите ли застраховаться?")
 
-        ans = raw_input("Идти дальше? (д/н)")
-        if ans == "д":
+        while True:
+            query = raw_input("Идти дальше? (y/n) \n")
+            ans = query[0].lower()
+            if query == '' or not ans in ['y', 'n']:
+                print('Пожалуйста ответьте y или n!')
+            else:
+                break
+        if ans == "y":
             player_hand.add_card(d.deal_card())
             print(player_hand)
             if player_hand.get_value() > 21:
@@ -86,12 +117,15 @@ def new_game():
         else:
             print("Ты стоишь!")
             break
+
+
     print "=" * 20
     if in_game:
         while dealer_hand.get_value() < 17:
             dealer_hand.add_card(d.deal_card())
             print(dealer_hand)
             if dealer_hand.get_value() > 21:
+
                 print("Дилер проиграл")
                 file_save.write("You win")
                 file_save.close()
