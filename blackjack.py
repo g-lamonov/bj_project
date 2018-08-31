@@ -21,13 +21,16 @@ class Card(object):
 class bankAccount:
     def __init__(self):
         self.initial_balance = 500
-
+        self.bet = 0
     def moneyOfTheWinner(self, amount):
-        self.balance +=amount
+        self.initial_balance += amount
         return self.initial_balance
-
+    def betOfPlayer(self, playerBet):
+        self.bet == playerBet
+        self.initial_balance -= int(playerBet)
+        return self.bet
     def moneyOfTheBankAccount(self, amount):
-        self.balance -= amount
+        self.initial_balance -= int(amount)
         return self.initial_balance
     def stateOfAnAccount(self):
         return self.initial_balance
@@ -71,7 +74,7 @@ class Deck(object):
 
 from random import shuffle
 def new_game():
-    file_save = open('21.txt', 'w')
+    file_save = open('21.txt', 'w+')
     d = Deck()
 
     player_balance = bankAccount()
@@ -81,11 +84,13 @@ def new_game():
     print("You have " + str(player_balance.stateOfAnAccount()) + "$ money")
 
     while True:
-        betOfMoney = raw_input("Сделайте ставку \n")
-        if betOfMoney > str(player_balance.stateOfAnAccount()):
+        player_balance.betOfPlayer(raw_input("Сделайте ставку \n"))
+        if player_balance.bet > str(player_balance.stateOfAnAccount()):
             print('Ставка превышает баланс!')
         else:
+
             break
+    print("You have " + str(player_balance.stateOfAnAccount()) + "$ money")
 
     player_hand.add_card(d.deal_card())
     player_hand.add_card(d.deal_card())
@@ -140,6 +145,18 @@ def new_game():
             print("Дилер выиграл")
             file_save.write('Dealer win')
             file_save.close()
+
+    while True:
+        query = raw_input("Желаете продолжить игру? (y/n) \n")
+        answ = query[0].lower()
+        if query == '' or not ans in ['y', 'n']:
+            print('Пожалуйста ответьте y или n!')
+        else:
+            break
+    if answ == "y":
+        new_game()
+    else:
+        print("The end")
 
 
 new_game()
