@@ -76,7 +76,6 @@ from random import shuffle
 def new_game():
     file_save = open('21.txt', 'w+')
     d = Deck()
-
     player_balance = bankAccount()
     player_hand = Hand("Игрок")
     dealer_hand = Hand("Дилер")
@@ -84,8 +83,8 @@ def new_game():
     print("You have " + str(player_balance.stateOfAnAccount()) + "$ money")
 
     while True:
-        player_balance.betOfPlayer(raw_input("Сделайте ставку \n"))
-        if player_balance.bet > str(player_balance.stateOfAnAccount()):
+        player_balance.betOfPlayer(input("Сделайте ставку \n"))
+        if player_balance.bet > player_balance.stateOfAnAccount():
             print('Ставка превышает баланс!')
         else:
 
@@ -107,7 +106,7 @@ def new_game():
             print("У дилера туз, хотите ли застраховаться?")
 
         while True:
-            query = raw_input("Идти дальше? (y/n) \n")
+            query = input("Идти дальше? (y/n) \n")
             ans = query[0].lower()
             if query == '' or not ans in ['y', 'n']:
                 print('Пожалуйста ответьте y или n!')
@@ -124,7 +123,7 @@ def new_game():
             break
 
 
-    print "=" * 20
+    print("=" * 20)
     if in_game:
         while dealer_hand.get_value() < 17:
             dealer_hand.add_card(d.deal_card())
@@ -147,7 +146,7 @@ def new_game():
             file_save.close()
 
     while True:
-        query = raw_input("Желаете продолжить игру? (y/n) \n")
+        query = input("Желаете продолжить игру? (y/n) \n")
         answ = query[0].lower()
         if query == '' or not ans in ['y', 'n']:
             print('Пожалуйста ответьте y или n!')
