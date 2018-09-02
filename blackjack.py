@@ -26,9 +26,12 @@ class bankAccount:
         self.initial_balance += amount
         return self.initial_balance
     def betOfPlayer(self, playerBet):
-        self.bet == playerBet
-        self.initial_balance -= int(playerBet)
-        return self.bet
+        if int(playerBet) > self.initial_balance:
+            print("Cумма ставки превышает баланс")
+            return self.bet
+        if int(playerBet) < self.initial_balance:
+            self.initial_balance -= int(playerBet)
+            return self.bet
     def moneyOfTheBankAccount(self, amount):
         self.initial_balance -= int(amount)
         return self.initial_balance
@@ -85,7 +88,12 @@ def new_game():
     while True:
         player_balance.betOfPlayer(input("Сделайте ставку \n"))
         if player_balance.bet > player_balance.stateOfAnAccount():
+
             print('Ставка превышает баланс!')
+            player_balance.bet == 0
+            print(player_balance.bet)
+            print(player_balance.stateOfAnAccount())
+            continue
         else:
 
             break
