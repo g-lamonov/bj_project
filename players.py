@@ -36,3 +36,10 @@ db['player2'] = player2
 if '__name__' != '__main__':
     for key in db:
         print(key, '=>\n', db[key])
+
+
+
+import json
+
+with open("example1.json", "w", encoding="utf-8") as file:
+    json.dump(список, file)

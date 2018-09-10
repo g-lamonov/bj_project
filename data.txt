@@ -1,0 +1,1 @@
+{"another dict": {"foo": "bar", "the answer": 42, "key": "value"}, "a list": [1, 42, 3.141, 1337, "help", "\u20ac"], "a string": "bla"}

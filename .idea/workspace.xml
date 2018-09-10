@@ -4,6 +4,7 @@
     <list default="true" id="9cf7d117-0fa6-4312-b2e9-fbdc78a1d2e7" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blackjack.py" beforeDir="false" afterPath="$PROJECT_DIR$/blackjack.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/players.py" beforeDir="false" afterPath="$PROJECT_DIR$/players.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,25 +19,28 @@
     <session id="-915356707">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
+          <entry key="project.closed" value="8" />
+          <entry key="project.open.time.12" value="1" />
+          <entry key="project.open.time.14" value="1" />
           <entry key="project.open.time.16" value="1" />
-          <entry key="project.open.time.20" value="2" />
+          <entry key="project.open.time.20" value="3" />
           <entry key="project.open.time.22" value="1" />
           <entry key="project.open.time.28" value="1" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.opened" value="6" />
+          <entry key="project.open.time.8" value="2" />
+          <entry key="project.opened" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="14" />
-          <entry key="py" value="3371" />
+          <entry key="py" value="4949" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="14" />
-          <entry key="Python" value="3371" />
+          <entry key="Python" value="4949" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -55,29 +59,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blackjack.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-555">
-              <caret line="23" column="20" lean-forward="true" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
+            <state relative-caret-position="170">
+              <caret line="149" column="22" selection-start-line="149" selection-start-column="22" selection-end-line="149" selection-end-column="22" />
               <folding>
-                <marker date="1535798046299" expanded="true" signature="528:533" ph="..." />
-                <marker date="1535798046299" expanded="true" signature="552:557" ph="..." />
-                <marker date="1535798046299" expanded="true" signature="608:609" ph="..." />
-                <marker date="1535798046299" expanded="true" signature="608:613" ph="..." />
-                <marker date="1535798046299" expanded="true" signature="648:1024" ph="..." />
+                <marker date="1536574276293" expanded="true" signature="541:546" ph="..." />
+                <marker date="1536574276293" expanded="true" signature="565:570" ph="..." />
+                <marker date="1536574276293" expanded="true" signature="621:622" ph="..." />
+                <marker date="1536574276293" expanded="true" signature="621:626" ph="..." />
+                <marker date="1536574276293" expanded="true" signature="661:1037" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/players.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
+            <state relative-caret-position="510">
+              <caret line="43" column="19" selection-start-line="43" selection-start-column="19" selection-end-line="43" selection-end-column="19" />
               <folding>
-                <marker date="1535901749624" expanded="true" signature="55:325" ph="..." />
+                <marker date="1536572888540" expanded="true" signature="55:325" ph="..." />
               </folding>
             </state>
           </provider>
@@ -101,9 +105,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/blackjack.py" />
         <option value="$PROJECT_DIR$/json.py" />
         <option value="$PROJECT_DIR$/players.py" />
+        <option value="$PROJECT_DIR$/blackjack.py" />
       </list>
     </option>
   </component>
@@ -166,7 +170,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.players">
+  <component name="RunManager" selected="Python.blackjack">
     <configuration name="blackjack" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="bj_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -215,8 +219,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.players" />
         <item itemvalue="Python.blackjack" />
+        <item itemvalue="Python.players" />
       </list>
     </recent_temporary>
   </component>
@@ -234,10 +238,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="-11" width="1368" height="739" extended-state="6" />
+    <frame x="0" y="-4" width="1366" height="731" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24553572" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24107143" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -266,26 +270,26 @@
     <entry file="file://$PROJECT_DIR$/example1.json">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/blackjack.py">
+    <entry file="file://$PROJECT_DIR$/players.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-555">
-          <caret line="23" column="20" lean-forward="true" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
+        <state relative-caret-position="510">
+          <caret line="43" column="19" selection-start-line="43" selection-start-column="19" selection-end-line="43" selection-end-column="19" />
           <folding>
-            <marker date="1535798046299" expanded="true" signature="528:533" ph="..." />
-            <marker date="1535798046299" expanded="true" signature="552:557" ph="..." />
-            <marker date="1535798046299" expanded="true" signature="608:609" ph="..." />
-            <marker date="1535798046299" expanded="true" signature="608:613" ph="..." />
-            <marker date="1535798046299" expanded="true" signature="648:1024" ph="..." />
+            <marker date="1536572888540" expanded="true" signature="55:325" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/players.py">
+    <entry file="file://$PROJECT_DIR$/blackjack.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
+        <state relative-caret-position="170">
+          <caret line="149" column="22" selection-start-line="149" selection-start-column="22" selection-end-line="149" selection-end-column="22" />
           <folding>
-            <marker date="1535901749624" expanded="true" signature="55:325" ph="..." />
+            <marker date="1536574276293" expanded="true" signature="541:546" ph="..." />
+            <marker date="1536574276293" expanded="true" signature="565:570" ph="..." />
+            <marker date="1536574276293" expanded="true" signature="621:622" ph="..." />
+            <marker date="1536574276293" expanded="true" signature="621:626" ph="..." />
+            <marker date="1536574276293" expanded="true" signature="661:1037" ph="..." />
           </folding>
         </state>
       </provider>
