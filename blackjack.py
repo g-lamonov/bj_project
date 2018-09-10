@@ -139,15 +139,15 @@ class BankAccountManager:
 from random import shuffle
 def new_game():
     d = Deck()
-
-    data = {'a list': [1, 42, 3.141, 1337, 'help', u'€'],
+    accList = BankAccountManager()
+    data = {'a list': [2, 43, 3.141, 1337, 'help', u'€'],
             'a string': 'bla',
             'another dict': {'foo': 'bar',
                              'key': 'value',
                              'the answer': 42}}
 
     with open('data.txt', 'w+') as fil:
-        json.dump(data, fil)
+        json.dump(accList.account_list, fil)
     game = True
     while True:
         d = Deck()

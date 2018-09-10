@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9cf7d117-0fa6-4312-b2e9-fbdc78a1d2e7" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blackjack.py" beforeDir="false" afterPath="$PROJECT_DIR$/blackjack.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/players.py" beforeDir="false" afterPath="$PROJECT_DIR$/players.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,24 +33,26 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="14" />
-          <entry key="py" value="4949" />
+          <entry key="py" value="5020" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="14" />
-          <entry key="Python" value="4949" />
+          <entry key="Python" value="5020" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="json" value="1" />
           <entry key="py" value="1" />
+          <entry key="txt" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JSON" value="1" />
+          <entry key="PLAIN_TEXT" value="1" />
           <entry key="Python" value="1" />
         </counts>
       </usages-collector>
@@ -62,17 +63,22 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blackjack.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="149" column="22" selection-start-line="149" selection-start-column="22" selection-end-line="149" selection-end-column="22" />
+            <state relative-caret-position="155">
+              <caret line="149" column="18" selection-start-line="149" selection-start-column="18" selection-end-line="149" selection-end-column="18" />
               <folding>
-                <marker date="1536574276293" expanded="true" signature="541:546" ph="..." />
-                <marker date="1536574276293" expanded="true" signature="565:570" ph="..." />
-                <marker date="1536574276293" expanded="true" signature="621:622" ph="..." />
-                <marker date="1536574276293" expanded="true" signature="621:626" ph="..." />
-                <marker date="1536574276293" expanded="true" signature="661:1037" ph="..." />
+                <marker date="1536575198847" expanded="true" signature="541:546" ph="..." />
+                <marker date="1536575198847" expanded="true" signature="565:570" ph="..." />
+                <marker date="1536575198847" expanded="true" signature="621:622" ph="..." />
+                <marker date="1536575198847" expanded="true" signature="621:626" ph="..." />
+                <marker date="1536575198847" expanded="true" signature="661:1037" ph="..." />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data.txt">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -280,16 +286,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/data.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/blackjack.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="149" column="22" selection-start-line="149" selection-start-column="22" selection-end-line="149" selection-end-column="22" />
+        <state relative-caret-position="155">
+          <caret line="149" column="18" selection-start-line="149" selection-start-column="18" selection-end-line="149" selection-end-column="18" />
           <folding>
-            <marker date="1536574276293" expanded="true" signature="541:546" ph="..." />
-            <marker date="1536574276293" expanded="true" signature="565:570" ph="..." />
-            <marker date="1536574276293" expanded="true" signature="621:622" ph="..." />
-            <marker date="1536574276293" expanded="true" signature="621:626" ph="..." />
-            <marker date="1536574276293" expanded="true" signature="661:1037" ph="..." />
+            <marker date="1536575198847" expanded="true" signature="541:546" ph="..." />
+            <marker date="1536575198847" expanded="true" signature="565:570" ph="..." />
+            <marker date="1536575198847" expanded="true" signature="621:622" ph="..." />
+            <marker date="1536575198847" expanded="true" signature="621:626" ph="..." />
+            <marker date="1536575198847" expanded="true" signature="661:1037" ph="..." />
           </folding>
         </state>
       </provider>
