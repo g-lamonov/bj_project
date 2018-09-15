@@ -138,6 +138,7 @@ class BankAccountManager:
 
 from random import shuffle
 def new_game():
+    file_save = open('21.txt', 'w+')
     d = Deck()
     accList = BankAccountManager()
     data = {'a list': [2, 43, 3.141, 1337, 'help', u'€'],
@@ -154,7 +155,7 @@ def new_game():
         bankAcc = BankAccountManager()
 
         while True:
-            answerToTheQuestion = int(input("Добро пожаловать, выберите пользователя:\n1 Вывести список пользователей\n2 Ввести id пользователя\n3 Создать нового пользователя\n4 Выбрать пользователя\n5 Завершить\nВвод: "))
+            answerToTheQuestion = int(input("Добро пожаловать, выберите пользователя:\n1 Вывести список пользователей\n2 Ввести id пользователя\n3 Создать нового пользователя\n4 Выбрать пользователя и завершить\nВвод: "))
             if answerToTheQuestion == 1:
                 for account in (bankAcc.account_list):
                     print(bankAcc.get_account_report(account.id))
@@ -174,27 +175,18 @@ def new_game():
                 bankAcc.add_account(answerId, answerName, answerInitBalance)
 
                 continue
-            if answerToTheQuestion == 5:
+            if answerToTheQuestion == 4:
+
                 break
-        player_balance = BankAccount()
+        player_balance = Account(answerId, answerName, answerInitBalance)
         player_hand = Hand("Игрок")
         dealer_hand = Hand("Дилер")
 
-        print("You have " + str(player_balance.stateOfAnAccount()) + "$ money")
+        print("You have " + str(player_balance.get_balance()) + "$ money")
 
-        while True:
-            player_balance.betOfPlayer(input("Сделайте ставку \n"))
-            if player_balance.bet > player_balance.stateOfAnAccount():
+        player_balance.withdraw(int(input("Сделайте ставку \n")))
 
-                print('Ставка превышает баланс!')
-                player_balance.bet == 0
-                print(player_balance.bet)
-                print(player_balance.stateOfAnAccount())
-                continue
-            else:
-
-                break
-        print("You have " + str(player_balance.stateOfAnAccount()) + "$ money")
+        print("Ваш баланс " + str(player_balance.get_balance()) + "$ money")
 
         player_hand.add_card(d.deal_card())
         player_hand.add_card(d.deal_card())
@@ -267,5 +259,5 @@ def new_game():
         else:
             break
 
-
-new_game()
+while True:
+    new_game()
