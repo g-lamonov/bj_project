@@ -141,14 +141,7 @@ def new_game():
     file_save = open('21.txt', 'w+')
     d = Deck()
     accList = BankAccountManager()
-    data = {'a list': [2, 43, 3.141, 1337, 'help', u'€'],
-            'a string': 'bla',
-            'another dict': {'foo': 'bar',
-                             'key': 'value',
-                             'the answer': 42}}
 
-    with open('data.txt', 'w+') as fil:
-        json.dump(accList.account_list, fil)
     game = True
     while True:
         d = Deck()
@@ -173,11 +166,19 @@ def new_game():
                 answerInitBalance = int(input('Введите начальный баланс пользователя: '))
                 print(answerInitBalance)
                 bankAcc.add_account(answerId, answerName, answerInitBalance)
-
+                dataArray = [answerId, answerName, answerInitBalance]
                 continue
             if answerToTheQuestion == 4:
 
                 break
+
+        listToJSON = ['id', 'name', 'balance']
+
+        data = dict(zip(listToJSON, dataArray))
+
+        with open('data.json', 'w+') as fil:
+            json.dump(data, fil)
+
         player_balance = Account(answerId, answerName, answerInitBalance)
         player_hand = Hand("Игрок")
         dealer_hand = Hand("Дилер")
