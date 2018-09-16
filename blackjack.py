@@ -118,7 +118,6 @@ class BankAccountManager:
         index = self.checkID(customer_id)
         self.account_list[index].deposit(amount)
 
-
     def make_withdrawl(self, customer_id, amount):
         index = self.checkID(customer_id)
 #        print index
@@ -142,21 +141,28 @@ def new_game():
     d = Deck()
     accList = BankAccountManager()
 
-    game = True
     while True:
         d = Deck()
         bankAcc = BankAccountManager()
-
+        listToJSON = ['id', 'name', 'balance']
+        idPlayer = 1
         while True:
-            answerToTheQuestion = int(input("Добро пожаловать, выберите пользователя:\n1 Вывести список пользователей\n2 Ввести id пользователя\n3 Создать нового пользователя\n4 Выбрать пользователя и завершить\nВвод: "))
+            answerToTheQuestion = int(input("Добро пожаловать, выберите пользователя:\n1 Вывести список пользователей\n2 Продолжить игру\n3 Создать нового пользователя\n4 Выбрать пользователя и завершить\nВвод: "))
             if answerToTheQuestion == 1:
                 for account in (bankAcc.account_list):
                     print(bankAcc.get_account_report(account.id))
 
                 continue
             if answerToTheQuestion == 2:
-                print(bankAcc.get_account_report(int(input('Введите Id пользователя: '))))
-                continue
+                path = 'data.json'
+                with open(path,'r') as f:
+                    data = json.loads(f.read())
+                    jsonName = data['name']
+                    jsonBalance = data['balance']
+                    dataArr = (idPlayer, jsonName, jsonBalance)
+                    player_balance = Account(idPlayer, jsonName, jsonBalance)
+
+                break
             if answerToTheQuestion == 3:
                 print('Создание нового пользователя:\n')
                 answerId = int(input('Введите ID пользователя: '))
@@ -169,17 +175,17 @@ def new_game():
                 dataArray = [answerId, answerName, answerInitBalance]
                 continue
             if answerToTheQuestion == 4:
+                print(bankAcc.get_account_report(int(input('Введите Id пользователя: '))))
+                dataArr = (idPlayer, bankAcc.account_list[0].name, bankAcc.account_list[0].get_balance())
+                player_balance = Account(idPlayer, bankAcc.account_list[0].name, bankAcc.account_list[0].get_balance())
 
                 break
 
-        listToJSON = ['id', 'name', 'balance']
 
-        data = dict(zip(listToJSON, dataArray))
-
+        data = dict(zip(listToJSON, dataArr)
         with open('data.json', 'w+') as fil:
             json.dump(data, fil)
-
-        player_balance = Account(answerId, answerName, answerInitBalance)
+        
         player_hand = Hand("Игрок")
         dealer_hand = Hand("Дилер")
 
@@ -246,7 +252,7 @@ def new_game():
         while True:
             query = input("Желаете продолжить игру? (y/n) \n")
             answ = query[0].lower()
-            if query == '' or not ans in ['y', 'n']:
+            if query == '' or not answ in ['y', 'n']:
                 print('Пожалуйста ответьте y или n!')
             else:
                 break
