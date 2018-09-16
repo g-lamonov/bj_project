@@ -141,130 +141,127 @@ def new_game():
     d = Deck()
     accList = BankAccountManager()
 
+    bankAcc = BankAccountManager()
+    listToJSON = ['id', 'name', 'balance']
+    idPlayer = 1
     while True:
-        d = Deck()
-        bankAcc = BankAccountManager()
-        listToJSON = ['id', 'name', 'balance']
-        idPlayer = 1
-        while True:
-            answerToTheQuestion = int(input("Добро пожаловать, выберите пользователя:\n1 Вывести список пользователей\n2 Продолжить игру\n3 Создать нового пользователя\n4 Выбрать пользователя и завершить\nВвод: "))
-            if answerToTheQuestion == 1:
-                for account in (bankAcc.account_list):
-                    print(bankAcc.get_account_report(account.id))
+        answerToTheQuestion = int(input("Добро пожаловать, выберите пользователя:\n1 Вывести список пользователей\n2 Продолжить игру\n3 Создать нового пользователя\n4 Выбрать пользователя и завершить\nВвод: "))
+        if answerToTheQuestion == 1:
+            for account in (bankAcc.account_list):
+                print(bankAcc.get_account_report(account.id))
 
-                continue
-            if answerToTheQuestion == 2:
-                path = 'data.json'
-                with open(path,'r') as f:
-                    data = json.loads(f.read())
-                    jsonName = data['name']
-                    jsonBalance = data['balance']
-                    dataArr = (idPlayer, jsonName, jsonBalance)
-                    player_balance = Account(idPlayer, jsonName, jsonBalance)
+            continue
+        if answerToTheQuestion == 2:
+            path = 'data.json'
+            with open(path,'r') as f:
+                data = json.loads(f.read())
+                jsonName = data['name']
+                jsonBalance = data['balance']
+                dataArr = (idPlayer, jsonName, jsonBalance)
+                player_balance = Account(idPlayer, jsonName, jsonBalance)
 
-                break
-            if answerToTheQuestion == 3:
-                print('Создание нового пользователя:\n')
-                answerId = int(input('Введите ID пользователя: '))
-                print(answerId)
-                answerName = input('Введите имя пользователя: ')
-                print(answerName)
-                answerInitBalance = int(input('Введите начальный баланс пользователя: '))
-                print(answerInitBalance)
-                bankAcc.add_account(answerId, answerName, answerInitBalance)
-                dataArray = [answerId, answerName, answerInitBalance]
-                continue
-            if answerToTheQuestion == 4:
-                print(bankAcc.get_account_report(int(input('Введите Id пользователя: '))))
-                dataArr = (idPlayer, bankAcc.account_list[0].name, bankAcc.account_list[0].get_balance())
-                player_balance = Account(idPlayer, bankAcc.account_list[0].name, bankAcc.account_list[0].get_balance())
+            break
+        if answerToTheQuestion == 3:
+            print('Создание нового пользователя:\n')
+            answerId = int(input('Введите ID пользователя: '))
+            print(answerId)
+            answerName = input('Введите имя пользователя: ')
+            print(answerName)
+            answerInitBalance = int(input('Введите начальный баланс пользователя: '))
+            print(answerInitBalance)
+            bankAcc.add_account(answerId, answerName, answerInitBalance)
+            dataArray = [answerId, answerName, answerInitBalance]
 
-                break
+            file_save.writelines("%s\n" % item for item in dataArray)
+
+            continue
+        if answerToTheQuestion == 4:
+            print(bankAcc.get_account_report(int(input('Введите Id пользователя: '))))
+            dataArr = (idPlayer, bankAcc.account_list[0].name, bankAcc.account_list[0].get_balance())
+            player_balance = Account(idPlayer, bankAcc.account_list[0].name, bankAcc.account_list[0].get_balance())
+
+            break
 
 
-        data = dict(zip(listToJSON, dataArr)
-        with open('data.json', 'w+') as fil:
-            json.dump(data, fil)
-        
-        player_hand = Hand("Игрок")
-        dealer_hand = Hand("Дилер")
+    data = dict(zip(listToJSON, dataArr))
+    with open('data.json', 'w+') as fil:
+        json.dump(data, fil)
 
-        print("You have " + str(player_balance.get_balance()) + "$ money")
+    player_hand = Hand("Игрок")
+    dealer_hand = Hand("Дилер")
 
-        player_balance.withdraw(int(input("Сделайте ставку \n")))
+    print("You have " + str(player_balance.get_balance()) + "$ money")
 
-        print("Ваш баланс " + str(player_balance.get_balance()) + "$ money")
+    player_balance.withdraw(int(input("Сделайте ставку \n")))
 
-        player_hand.add_card(d.deal_card())
-        player_hand.add_card(d.deal_card())
+    print("Ваш баланс " + str(player_balance.get_balance()) + "$ money")
 
-        dealer_hand.add_card(d.deal_card())
+    player_hand.add_card(d.deal_card())
+    player_hand.add_card(d.deal_card())
 
-        print(dealer_hand)
-        print("="*20)
-        print(player_hand)
+    dealer_hand.add_card(d.deal_card())
 
-        in_game = True
-        while player_hand.get_value() < 21:
-            if ('Туз') in str(dealer_hand):
-                print("У дилера туз, хотите ли застраховаться?")
+    print(dealer_hand)
+    print("="*20)
+    print(player_hand)
 
-            while True:
-                query = input("Идти дальше? (y/n) \n")
-                ans = query[0].lower()
-                if query == '' or not ans in ['y', 'n']:
-                    print('Пожалуйста ответьте y или n!')
-                else:
-                    break
-            if ans == "y":
-                player_hand.add_card(d.deal_card())
-                print(player_hand)
-                if player_hand.get_value() > 21:
-                    print("Ты проиграл")
-                    in_game = False
-            else:
-                print("Ты стоишь!")
-                break
-
-
-        print("=" * 20)
-        if in_game:
-            while dealer_hand.get_value() < 17:
-                dealer_hand.add_card(d.deal_card())
-                print(dealer_hand)
-                if dealer_hand.get_value() > 21:
-
-                    print("Дилер проиграл")
-                    file_save.write("You win")
-                    file_save.close()
-                    in_game = False
-        if in_game:
-            if player_hand.get_value() > dealer_hand.get_value():
-                print("Ты выиграл")
-                file_save.write("You win")
-                file_save.close()
-
-            else:
-                print("Дилер выиграл")
-                file_save.write('Dealer win')
-                file_save.close()
+    in_game = True
+    while player_hand.get_value() < 21:
+        if ('Туз') in str(dealer_hand):
+            print("У дилера туз, хотите ли застраховаться?")
 
         while True:
-            query = input("Желаете продолжить игру? (y/n) \n")
-            answ = query[0].lower()
-            if query == '' or not answ in ['y', 'n']:
+            query = input("Идти дальше? (y/n) \n")
+            ans = query[0].lower()
+            if query == '' or not ans in ['y', 'n']:
                 print('Пожалуйста ответьте y или n!')
             else:
                 break
-        if answ == "y":
-            new_game()
+        if ans == "y":
+            player_hand.add_card(d.deal_card())
+            print(player_hand)
+            if player_hand.get_value() > 21:
+                print("Ты проиграл")
+                in_game = False
         else:
-            print("The end")
-        exitTheGame = input("Продолжить игру ? (y/n)")
-        if exitTheGame == 'n':
-            pass
-        else:
+            print("Ты стоишь!")
             break
 
-while True:
-    new_game()
+
+    print("=" * 20)
+    if in_game:
+        while dealer_hand.get_value() < 17:
+            dealer_hand.add_card(d.deal_card())
+            print(dealer_hand)
+            if dealer_hand.get_value() > 21:
+
+                print("Дилер проиграл")
+                file_save.write("You win")
+                file_save.close()
+                in_game = False
+    if in_game:
+        if player_hand.get_value() > dealer_hand.get_value():
+            print("Ты выиграл")
+            file_save.write("You win")
+            file_save.close()
+
+        else:
+            print("Дилер выиграл")
+            file_save.write('Dealer win')
+            file_save.close()
+
+    while True:
+        query = input("Желаете продолжить игру? (y/n) \n")
+        answ = query[0].lower()
+        if query == '' or not answ in ['y', 'n']:
+            print('Пожалуйста ответьте y или n!')
+        else:
+            break
+    if answ == "y":
+        new_game()
+    if answ == 'n':
+        print("The end")
+
+
+
+new_game()
