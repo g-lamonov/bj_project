@@ -58,8 +58,11 @@ class Hand(object):
         if result + aces * 10 <= 21:
             result +=aces * 10
         return result
+    def get_cards(self):
+        return self.cards
 
     def __str__(self):
+
         text =  "%sсодержит :\n" % self.name
         for card in self.cards:
             text += str(card) + " "
@@ -67,10 +70,11 @@ class Hand(object):
 
         return text
 
+
 class Deck(object):
     def __init__(self):
         ranks = ('2','3','4','5','6','7','8','9','10','Валет','Королева','Король','Туз')
-        suits = ('Бубны','Червы','Трефы','Пики')
+        suits = ('♦','♥','♣','♠')
         self.cards = [Card(r,s) for r in ranks for s in suits]
         shuffle(self.cards)
 
@@ -88,8 +92,10 @@ class Account:
             return True
 
     def withdraw(self, amount):
-        if amount > self.balance:
-            raise RuntimeError('No action: Amount greater than available balance.')
+        while amount > self.balance:
+            print('Сумма превышает баланс')
+            amount = int(input('Пожалуйста введите корректную сумму: \n'))
+            continue
         self.balance = self.balance - amount
 
     def deposit(self, amount):
@@ -145,38 +151,55 @@ class GameStatus:
         if number == 3:
             status = {'identification': 1, 'bet': 1, 'totalOfTheGame': 1}
             self.jsonDump(status)
+        if number == 9:
+            status = {'identification': 0, 'bet': 0, 'totalOfTheGame': 0}
+            self.jsonDump(status)
+
 
     def jsonDump(self, data):
         with open('gameStatus.json', 'w+') as file:
             json.dump(data, file)
 
+
 from random import shuffle
+
+
 def new_game():
 
     file_save = open('21.txt', 'w+')
-    d = Deck()
-    accList = BankAccountManager()
+    pack = Deck()
     game = GameStatus()
+
+
     bankAcc = BankAccountManager()
-    listToJSON = ['id', 'name', 'balance']
+
     idPlayer = 1
+    path = 'data.json'
 
     with open('gameStatus.json', 'r') as f:
         status = json.loads(f.read())
     if status['identification'] == 1:
-
+        print('Работает')
 
     while True:
-        answerToTheQuestion = int(input("Добро пожаловать, выберите пользователя:\n1 Вывести список пользователей\n2 Продолжить игру\n3 Создать нового пользователя\n4 Выбрать пользователя и завершить\nВвод: "))
+        answerToTheQuestion = int(input(
+            "Добро пожаловать, выберите пользователя:\n1 Вывести данные о пользователе"
+            "\n2 Продолжить игру\n3 Создать нового пользователя\nВвод: "))
         if answerToTheQuestion == 1:
-            for account in (bankAcc.account_list):
-                print(bankAcc.get_account_report(account.id))
-
-            continue
-        if answerToTheQuestion == 2:
-            path = 'data.json'
             with open(path, 'r') as f:
                 data = json.loads(f.read())
+                jsonName = data['name']
+                jsonBalance = data['balance']
+                userInformation = (idPlayer, jsonName, jsonBalance)
+                templateForTheUser = ("ID: %s\n"
+                                 "Name: %s\n"
+                                 "Balance: %.02f\n")
+                print(templateForTheUser % userInformation)
+            continue
+        if answerToTheQuestion == 2:
+            with open(path, 'r') as f:
+                data = json.loads(f.read())
+
                 jsonName = data['name']
                 jsonBalance = data['balance']
                 dataArr = (idPlayer, jsonName, jsonBalance)
@@ -184,6 +207,7 @@ def new_game():
 
             break
         if answerToTheQuestion == 3:
+            listToJSON = ['id', 'name', 'balance']
             print('Создание нового пользователя:\n')
             answerId = int(input("Введите ID пользователя: "))
             print(answerId)
@@ -193,37 +217,41 @@ def new_game():
             print(answerInitBalance)
             bankAcc.add_account(answerId, answerName, answerInitBalance)
             dataArray = [answerId, answerName, answerInitBalance]
+            dataArr = (idPlayer, bankAcc.account_list[0].name, bankAcc.account_list[0].get_balance())
+            data = dict(zip(listToJSON, dataArr))
 
+            with open('data.json', 'w+') as fil:
+                json.dump(data, fil)
             file_save.writelines("%s\n" % item for item in dataArray)
 
             continue
-        if answerToTheQuestion == 4:
-            print(bankAcc.get_account_report(int(input('Введите Id пользователя: '))))
-            dataArr = (idPlayer, bankAcc.account_list[0].name, bankAcc.account_list[0].get_balance())
-            player_balance = Account(idPlayer, bankAcc.account_list[0].name, bankAcc.account_list[0].get_balance())
-
-            game.playerStatus(int('1'))
-
-            break
-
-
-    data = dict(zip(listToJSON, dataArr))
-    with open('data.json', 'w+') as fil:
-        json.dump(data, fil)
 
     player_hand = Hand("Игрок")
     dealer_hand = Hand("Дилер")
 
+
     print("You have " + str(player_balance.get_balance()) + "$ money")
 
     player_balance.withdraw(int(input("Сделайте ставку \n")))
-
+    game.playerStatus(int('2'))
     print("Ваш баланс " + str(player_balance.get_balance()) + "$ money")
 
-    player_hand.add_card(d.deal_card())
-    player_hand.add_card(d.deal_card())
+    player_hand.add_card(pack.deal_card())
+    dealer_hand.add_card(pack.deal_card())
+    numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+               15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+               27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
 
-    dealer_hand.add_card(d.deal_card())
+    cards2 = [('2', '♦'), ('2', '♥'), ('2', '♣'), ('2', '♠'), ('3', '♦'), ('3', '♥'), ('3', '♣'), ('3', '♠'), ('4', '♦'),
+     ('4', '♥'), ('4', '♣'), ('4', '♠'), ('5', '♦'), ('5', '♥'), ('5', '♣'), ('5', '♠'), ('6', '♦'), ('6', '♥'),
+     ('6', '♣'), ('6', '♠'), ('7', '♦'), ('7', '♥'), ('7', '♣'), ('7', '♠'), ('8', '♦'), ('8', '♥'), ('8', '♣'),
+     ('8', '♠'), ('9', '♦'), ('9', '♥'), ('9', '♣'), ('9', '♠'), ('10', '♦'), ('10', '♥'), ('10', '♣'), ('10', '♠'),
+     ('Валет', '♦'), ('Валет', '♥'), ('Валет', '♣'), ('Валет', '♠'), ('Королева', '♦'), ('Королева', '♥'),
+     ('Королева', '♣'), ('Королева', '♠'), ('Король', '♦'), ('Король', '♥'), ('Король', '♣'), ('Король', '♠'),
+     ('Туз', '♦'), ('Туз', '♥'), ('Туз', '♣'), ('Туз', '♠')]
+    users = dict(zip(numbers, cards2))
+    with open('example1.json', 'w+') as f:
+        f.write(json.dumps(users))
 
     print(dealer_hand)
     print("="*20)
@@ -242,7 +270,7 @@ def new_game():
             else:
                 break
         if ans == "y":
-            player_hand.add_card(d.deal_card())
+            player_hand.add_card(pack.deal_card())
             print(player_hand)
             if player_hand.get_value() > 21:
                 print("Ты проиграл")
@@ -255,7 +283,7 @@ def new_game():
     print("=" * 20)
     if in_game:
         while dealer_hand.get_value() < 17:
-            dealer_hand.add_card(d.deal_card())
+            dealer_hand.add_card(pack.deal_card())
             print(dealer_hand)
             if dealer_hand.get_value() > 21:
 
@@ -288,9 +316,12 @@ def new_game():
         else:
             break
     if answ == "y":
+        game.playerStatus(int('9'))
         new_game()
+
     if answ == 'n':
         print("The end")
+    game.playerStatus(int('9'))
 
 
 
