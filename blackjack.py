@@ -9,8 +9,9 @@ class Card(object):
         self.rank = rank
         self.suit = suit
 
+
     def card_value(self):
-        if self.rank in ('Валет','Королева','Король','Туз'):
+        if (self.rank) in ('Валет','Королева','Король','Туз'):
             return 10
         else:
             return ('', 'Туз','2','3','4','5','6','7','8','9','10').index(self.rank)
@@ -67,7 +68,17 @@ class Hand(object):
     def get_value(self):
         result = 0
         aces = 0
-        for card in self.cards:
+
+        dct = WorkWithJSON().OpenFile()
+
+        handDict = dct["playerHand"]
+        handKeys = list(handDict)
+        hand1 = [tuple(handDict[x]) for x in handKeys]
+
+        print(hand1)
+    
+        for card in hand1:
+            print(card)
             result += card.card_value()
             if card.get_rank() == "Туз":
                 aces += 1
@@ -76,12 +87,19 @@ class Hand(object):
         return result
 
     def __str__(self):
-        text = "%sсодержит :\n" % self.name
-        for card in self.cards:
-            text += str(card) + " "
-        text += "\nЗначение на руке: " + str(self.get_value())
 
-        return text
+        if self.name == "Игрок":
+            text = "%s содержит :\n" % self.name
+            for card in str(GameHistory().playerHand()):
+                text += str(card) + " "
+            text += "\nЗначение на руке: " + str(self.get_value())
+            return text
+        if self.name == "Дилер":
+            text = "%s содержит :\n" % self.name
+            text += "\nЗначение на руке: " + str(self.get_value())
+            return text
+
+
 
 class Account:
     def __init__(self, id, name_player, balance):
@@ -167,6 +185,11 @@ class WorkWithJSON:
 
 
 class GameHistory:
+
+    def playerHand(self):
+        dct = WorkWithJSON().OpenFile()
+
+        return hand
 
     def jsonName(self):
         dct = WorkWithJSON().OpenFile()
@@ -286,12 +309,16 @@ class Game():
         print("You have " + str(GameHistory().getBalance()) + "$ money")
 
         GameHistory().stateOfTheBet(int(input("Сделайте ставку \n")))
-
+        d = Deck()
         player_hand.add_card(d.deal_card())
         player_hand.add_card(d.deal_card())
 
         dealer_hand.add_card(d.deal_card())
 
+
+        print(dealer_hand)
+        print("=" * 20)
+        print(player_hand)
 if __name__ == "__main__":
     gam = Game()
     gam.new_game()
