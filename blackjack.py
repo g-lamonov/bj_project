@@ -15,6 +15,7 @@ class Card(object):
             return 10
         else:
             return ('', 'Туз','2','3','4','5','6','7','8','9','10').index(self.rank)
+
     def get_rank(self):
         return self.rank
 
@@ -76,11 +77,12 @@ class Hand(object):
         hand1 = [tuple(handDict[x]) for x in handKeys]
 
         print(hand1)
-    
+
         for card in hand1:
             print(card)
-            result += card.card_value()
-            if card.get_rank() == "Туз":
+
+            result += Card(card[0], card[1]).card_value()
+            if Card(card[0], card[1]).get_rank() == "Туз":
                 aces += 1
         if result + aces * 10 <= 21:
             result +=aces * 10
@@ -90,7 +92,7 @@ class Hand(object):
 
         if self.name == "Игрок":
             text = "%s содержит :\n" % self.name
-            for card in str(GameHistory().playerHand()):
+            for card in (GameHistory().playerHand()):
                 text += str(card) + " "
             text += "\nЗначение на руке: " + str(self.get_value())
             return text
@@ -188,6 +190,10 @@ class GameHistory:
 
     def playerHand(self):
         dct = WorkWithJSON().OpenFile()
+        handP = dct["playerHand"]
+
+        handKeys = list(handP)
+        hand = [tuple(handP[x]) for x in handKeys]
 
         return hand
 
