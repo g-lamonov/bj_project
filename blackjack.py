@@ -72,7 +72,15 @@ class Hand(object):
 
         dct = WorkWithJSON().OpenFile()
 
-        handDict = dct["playerHand"]
+        while True:
+            global handDict
+            if self.name == "Игрок":
+                handDict = dct["playerHand"]
+                break
+            if self.name == "Дилер":
+                handDict = dct["dealerHand"]
+                break
+
         handKeys = list(handDict)
         hand1 = [tuple(handDict[x]) for x in handKeys]
 
@@ -98,6 +106,8 @@ class Hand(object):
             return text
         if self.name == "Дилер":
             text = "%s содержит :\n" % self.name
+            for card in (GameHistory().dealerHand()):
+                text += str(card) + " "
             text += "\nЗначение на руке: " + str(self.get_value())
             return text
 
@@ -193,6 +203,15 @@ class GameHistory:
         handP = dct["playerHand"]
 
         handKeys = list(handP)
+        hand = [tuple(handP[x]) for x in handKeys]
+
+        return hand
+
+    def dealerHand(self):
+        dct = WorkWithJSON().OpenFile()
+        handP = dct["dealerHand"]
+        handKeys = list(handP)
+
         hand = [tuple(handP[x]) for x in handKeys]
 
         return hand
@@ -325,6 +344,8 @@ class Game():
         print(dealer_hand)
         print("=" * 20)
         print(player_hand)
+
+
 if __name__ == "__main__":
     gam = Game()
     gam.new_game()
