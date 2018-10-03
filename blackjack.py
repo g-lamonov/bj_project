@@ -20,7 +20,7 @@ class Card(object):
         return self.rank
 
     def __str__(self):
-        return "%s%s"  % (self.rank, self. suit)
+        return "%s%s" % (self.rank, self. suit)
 
 class BankAccount:
     def __init__(self):
@@ -44,10 +44,13 @@ class BankAccount:
 
 class Deck(object):
     def __init__(self):
+
         ranks = ('2','3','4','5','6','7','8','9','10','Валет','Королева','Король','Туз')
+
         suits = ('♦','♥','♣','♠')
-        self.cards = [Card(r,s) for r in ranks for s in suits]
+        self.cards = [Card(r,s)for r in ranks for s in suits]
         shuffle(self.cards)
+
 
     def deal_card(self):
         return self.cards.pop()
@@ -63,7 +66,26 @@ class Hand(object):
 
     def add_card(self, card):
         self.cards.append(card)
-        WorkWithJSON().ChangeHandPlayer(card)
+        print(card)
+        dct = WorkWithJSON().OpenFile()
+        while True:
+            if self.name == "Игрок":
+                lis = dct["playerHand"]
+                print(lis)
+                lis.append(str(card))
+                print(lis)
+                break
+            if self.name == "Дилер":
+                lis = dct["dealerHand"]
+                print(lis)
+                lis.append(str(card))
+                print(lis)
+                break
+
+        if self.name == "Игрок":
+            GameHistory().ChangeHandPlayer(lis)
+        if self.name == "Дилер":
+            GameHistory().ChangeDealerPlayer(lis)
 
 
     def get_value(self):
@@ -72,29 +94,22 @@ class Hand(object):
 
         dct = WorkWithJSON().OpenFile()
 
-        while True:
-            global handDict
-            if self.name == "Игрок":
-                handDict = dct["playerHand"]
-                break
-            if self.name == "Дилер":
-                handDict = dct["dealerHand"]
-                break
-
-        handKeys = list(handDict)
-        hand1 = [tuple(handDict[x]) for x in handKeys]
-
-        print(hand1)
-
-        for card in hand1:
-            print(card)
-
-            result += Card(card[0], card[1]).card_value()
-            if Card(card[0], card[1]).get_rank() == "Туз":
+        for card in self.cards:
+            result += card.card_value()
+            if card.get_rank() == "Туз":
                 aces += 1
         if result + aces * 10 <= 21:
-            result +=aces * 10
+            result += aces * 10
+
+
+        if self.name == "Игрок":
+            GameHistory().change_player_points(result)
+
+        if self.name == "Дилер":
+            GameHistory().change_dealer_points(result)
+
         return result
+
 
     def __str__(self):
 
@@ -175,14 +190,6 @@ class BankAccountManager:
 
 class WorkWithJSON:
 
-    def ChangeHandPlayer(self, data):
-        dataPlayer = self.OpenFile()
-
-        for key in dataPlayer["playerHand"]:
-            if dataPlayer["playerHand"][key] == 0:
-                dataPlayer["playerHand"][key] = data
-                break
-
     def OpenFile(self):
         with open('gameHistory.json', 'r') as f:
             data = json.loads(f.read())
@@ -193,28 +200,28 @@ class WorkWithJSON:
             json.dump(data, f)
 
 
-
-
-
 class GameHistory:
+    def ChangeHandPlayer(self, data):
+        dct = WorkWithJSON().OpenFile()
+        dct["playerHand"] = data
+        WorkWithJSON().WriteFile(dct)
+
+    def ChangeDealerPlayer(self, data):
+        dct = WorkWithJSON().OpenFile()
+        dct["dealerHand"] = data
+        WorkWithJSON().WriteFile(dct)
 
     def playerHand(self):
         dct = WorkWithJSON().OpenFile()
         handP = dct["playerHand"]
 
-        handKeys = list(handP)
-        hand = [tuple(handP[x]) for x in handKeys]
-
-        return hand
+        return handP
 
     def dealerHand(self):
         dct = WorkWithJSON().OpenFile()
         handP = dct["dealerHand"]
-        handKeys = list(handP)
 
-        hand = [tuple(handP[x]) for x in handKeys]
-
-        return hand
+        return handP
 
     def jsonName(self):
         dct = WorkWithJSON().OpenFile()
@@ -248,18 +255,44 @@ class GameHistory:
         dct = WorkWithJSON().OpenFile()
         balance = dct["playerData"]["balancePlayer"]
         return balance
+    def get_player_points(self):
+        dct = WorkWithJSON().OpenFile()
+        points = dct["player_points"]
+        return points
+
+    def change_player_points(self, data):
+        dct = WorkWithJSON().OpenFile()
+        dct["player_points"] = data
+        WorkWithJSON().WriteFile(dct)
+
+    def get_dealer_points(self):
+        dct = WorkWithJSON().OpenFile()
+        points = dct["dealer_points"]
+        return points
+
+    def change_dealer_points(self, data):
+        dct = WorkWithJSON().OpenFile()
+        dct["dealer_points"] = data
+        WorkWithJSON().WriteFile(dct)
+
     def new_game(self):
         dct = {"game" : {"state1" : 0, "state2" : 0 ,"state3" : 0, "state4" : 0,
                 "state5" : 0, "state6" : 0 ,"state7" : 0, "state8" : 0},
-                "playerData" : {"id": None,"namePlayer" : None, "balancePlayer" : None},
-                "playerHand": {"1": None , "2" : None, 3 : 0,
-                               "4" :0, "5" : 0, "6" : 0,
-                               "7" : 0, "8" : 0, "9" : 0},
-                "dealerHand" :{"1": [None]},
-                "statistics" : {"numberOfWins" : None, "numberOfLosers": None}
+                "playerData": {"id": None,"namePlayer" : None, "balancePlayer" : None},
+                "playerHand": [],
+                "dealerHand": [],
+                "statistics": {"numberOfWins" : None, "numberOfLosers": None}
                }
         with open('gameHistory.json', 'w+') as file:
             json.dump(dct, file)
+    def add_card1(self, card):
+        dct = WorkWithJSON().OpenFile()
+        cardItems = list(dct["playerHand"])
+        cardItems.append(card)
+        dct["playerHand"] = cardItems
+        WorkWithJSON().WriteFile(dct)
+
+
 
 class Game():
 
@@ -281,10 +314,10 @@ class Game():
                     self.Authorization()
         self.Authorization()
 
-
     def Authorization(self):
         reading = WorkWithJSON()
         data = reading.OpenFile()
+
 
         while True:
             answerToTheQuestion = int(input(
@@ -292,13 +325,20 @@ class Game():
                 "\n2 Создать нового пользователя\n3 Вывести статистику игрока \nВвод: "))
 
             if answerToTheQuestion == 1:
-                with open('gameHistory.json', 'r') as f:
-                    playerData = (data["playerData"]["id"],
-                                  data["playerData"]["namePlayer"],
-                                  data["playerData"]["balancePlayer"])
-                    print(playerData)
-                    self.runGame()
+
+                playerData = (data["playerData"]["id"],
+                              data["playerData"]["namePlayer"],
+                              data["playerData"]["balancePlayer"])
+                print(playerData)
+                dct = WorkWithJSON().OpenFile()
+                dct["playerHand"] = []
+                dct["dealerHand"] = []
+                dct["player_points"] = 0
+                dct["dealer_points"] = 0
+                WorkWithJSON().WriteFile(dct)
+                self.runGame()
                 break
+
             if answerToTheQuestion == 2:
                 print('Создание нового пользователя:\n')
                 answerId = int(input("Введите ID пользователя: "))
@@ -335,6 +375,7 @@ class Game():
 
         GameHistory().stateOfTheBet(int(input("Сделайте ставку \n")))
         d = Deck()
+
         player_hand.add_card(d.deal_card())
         player_hand.add_card(d.deal_card())
 
@@ -344,6 +385,42 @@ class Game():
         print(dealer_hand)
         print("=" * 20)
         print(player_hand)
+
+        in_game = True
+        while GameHistory().get_player_points() < 21:
+            while True:
+                query = input("Идти дальше? (y/n) \n")
+                ans = query[0].lower()
+                if query == '' or not ans in ['y', 'n']:
+                    print('Пожалуйста ответьте y или n!')
+                else:
+                    break
+            if ans == "y":
+                player_hand.add_card(d.deal_card())
+                print(player_hand)
+                if GameHistory().get_player_points() > 21:
+                    print("Ты проиграл")
+
+                    in_game = False
+            else:
+                print("Ты стоишь!")
+                break
+
+        print("=" * 20)
+        if in_game:
+            while GameHistory().get_dealer_points() < 17:
+                dealer_hand.add_card(d.deal_card())
+                print(dealer_hand)
+                if GameHistory().get_dealer_points() > 21:
+                    print("Дилер проиграл")
+                    in_game = False
+
+        if in_game:
+            if GameHistory().get_player_points() > GameHistory().get_dealer_points():
+                print("Ты выиграл")
+
+            else:
+                print("Дилер выиграл")
 
 
 if __name__ == "__main__":
