@@ -9,7 +9,6 @@ class Card(object):
         self.rank = rank
         self.suit = suit
 
-
     def card_value(self):
         if (self.rank) in ('Валет','Королева','Король','Туз'):
             return 10
@@ -26,9 +25,11 @@ class BankAccount:
     def __init__(self):
         self.initial_balance = 500
         self.bet = 0
+
     def moneyOfTheWinner(self, amount):
         self.initial_balance += amount
         return self.initial_balance
+
     def betOfPlayer(self, playerBet):
         if int(playerBet) > self.initial_balance:
             print("Cумма ставки превышает баланс")
@@ -36,28 +37,23 @@ class BankAccount:
         if int(playerBet) < self.initial_balance:
             self.initial_balance -= int(playerBet)
             return self.bet
+
     def moneyOfTheBankAccount(self, amount):
         self.initial_balance -= int(amount)
         return self.initial_balance
+
     def stateOfAnAccount(self):
         return self.initial_balance
 
 class Deck(object):
     def __init__(self):
-
         ranks = ('2','3','4','5','6','7','8','9','10','Валет','Королева','Король','Туз')
-
         suits = ('♦','♥','♣','♠')
         self.cards = [Card(r,s)for r in ranks for s in suits]
         shuffle(self.cards)
 
-
     def deal_card(self):
         return self.cards.pop()
-
-
-
-
 
 class Hand(object):
     def __init__(self, name):
@@ -84,6 +80,7 @@ class Hand(object):
 
         if self.name == "Игрок":
             GameHistory().ChangeHandPlayer(lis)
+
         if self.name == "Дилер":
             GameHistory().ChangeDealerPlayer(lis)
 
@@ -92,21 +89,12 @@ class Hand(object):
         result = 0
         aces = 0
 
-        dct = WorkWithJSON().OpenFile()
-
         for card in self.cards:
             result += card.card_value()
             if card.get_rank() == "Туз":
                 aces += 1
         if result + aces * 10 <= 21:
             result += aces * 10
-
-
-        if self.name == "Игрок":
-            GameHistory().change_player_points(result)
-
-        if self.name == "Дилер":
-            GameHistory().change_dealer_points(result)
 
         return result
 
@@ -364,10 +352,13 @@ class Game():
                                           "Имя: %s\n"
                                           "Баланс: %d\n"
                                           "Количество побед: %d\n"
-                                          "Количество проигршей: %d\n")
+                                          "Количество проигрышей: %d\n")
                     print(templateForTheUser % userInformation)
                 continue
     def runGame(self):
+        reading = WorkWithJSON()
+        data = reading.OpenFile()
+
         player_hand = Hand("Игрок")
         dealer_hand = Hand("Дилер")
 
@@ -377,34 +368,50 @@ class Game():
         d = Deck()
 
         player_hand.add_card(d.deal_card())
+        points = player_hand.get_value()
+        GameHistory().change_player_points(points)
+
         player_hand.add_card(d.deal_card())
+        points = player_hand.get_value()
+        GameHistory().change_player_points(points)
 
         dealer_hand.add_card(d.deal_card())
-
+        points = dealer_hand.get_value()
+        GameHistory().change_dealer_points(points)
 
         print(dealer_hand)
         print("=" * 20)
         print(player_hand)
 
         in_game = True
-        while GameHistory().get_player_points() < 21:
+        print(GameHistory().get_player_points())
+        while player_hand.get_value() < 21:
             while True:
+                print(GameHistory().get_player_points())
                 query = input("Идти дальше? (y/n) \n")
                 ans = query[0].lower()
                 if query == '' or not ans in ['y', 'n']:
                     print('Пожалуйста ответьте y или n!')
                 else:
                     break
+
             if ans == "y":
                 player_hand.add_card(d.deal_card())
                 print(player_hand)
-                if GameHistory().get_player_points() > 21:
+                points = player_hand.get_value()
+                GameHistory().change_player_points(points)
+                if points > 21:
                     print("Ты проиграл")
-
+                    print("-*" * 10 + "-")
+                    print("Твой баланс был: " + str(data["playerData"]["balancePlayer"]))
+                    data["playerData"]["balancePlayer"] = data["playerData"]["balancePlayer"] - data["bet"]
+                    print("Твой баланс стал: " + str(data["playerData"]["balancePlayer"]))
+                    print("-*" * 10 + "-")
+                    WorkWithJSON().WriteFile(data)
                     in_game = False
-            else:
-                print("Ты стоишь!")
-                break
+                else:
+                    print("Ты стоишь!")
+                    break
 
         print("=" * 20)
         if in_game:
@@ -413,14 +420,33 @@ class Game():
                 print(dealer_hand)
                 if GameHistory().get_dealer_points() > 21:
                     print("Дилер проиграл")
+                    print("-*" * 10 + "-")
+                    print("Твой баланс был: " + str(data["playerData"]["balancePlayer"]))
+                    data["playerData"]["balancePlayer"] = data["playerData"]["balancePlayer"] + data["bet"]
+                    print("Твой баланс стал: " + str(data["playerData"]["balancePlayer"]))
+                    print("-*" * 10 + "-")
+                    WorkWithJSON().WriteFile(data)
                     in_game = False
 
         if in_game:
             if GameHistory().get_player_points() > GameHistory().get_dealer_points():
                 print("Ты выиграл")
+                print("-*" * 10 + "-")
+                print("Твой баланс был: " + str(data["playerData"]["balancePlayer"]))
+                data["playerData"]["balancePlayer"] = data["playerData"]["balancePlayer"] + data["bet"]
+                print("Твой баланс стал: " + str(data["playerData"]["balancePlayer"]))
+                print("-*" * 10 + "-")
+                WorkWithJSON().WriteFile(data)
 
             else:
                 print("Дилер выиграл")
+                print("-*" * 10 + "-")
+                print("Твой баланс был: " + str(data["playerData"]["balancePlayer"]))
+                data["playerData"]["balancePlayer"] = data["playerData"]["balancePlayer"] - data["bet"]
+                print("Твой баланс стал: " + str(data["playerData"]["balancePlayer"]))
+                WorkWithJSON().WriteFile(data)
+                print("-*" * 10 + "-")
+
 
 
 if __name__ == "__main__":
